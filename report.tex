@@ -1,0 +1,67 @@
+\documentclass[11pt]{article}
+
+\usepackage{sectsty}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{xcolor}
+\usepackage{lastpage}
+\usepackage{tikz}
+\usepackage{longtable}
+\usepackage{silence}
+
+\WarningsOff
+\ErrorsOff
+
+% Margins
+\topmargin=-0.45in
+
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.75in
+\textheight=8.in
+\headsep=0.25in
+\hoffset=-0.40in
+
+
+\lhead{\includegraphics[width=5cm]{PineLogoH}}
+\rhead{{Idaho National Laboratory\\
+        Date: \today\\
+        Page: \thepage\ of \pageref{LastPage}}}
+\setlength\headheight{60pt} 
+\fancyheadoffset[RE,LO]{0\textwidth}
+\renewcommand{\headrulewidth}{0pt}
+
+\begin{document}
+
+
+%--Paper--
+\begin{center}
+    \huge
+    \textbf{Tensile Test Report}
+\end{center}
+
+
+\begin{figure}[ht]
+    \vspace*{-.0cm}
+    \centering
+    \includegraphics[width=.750\textwidth]{collatedData.pdf}
+    \label{fig:plot}
+\end{figure}
+
+%\begin{table}[ht] %2 211129-3 Summary Table
+%    \centering
+%    \vspace*{.0cm}
+%    \resizebox{.92\width}{!}{\input{data.tex}}
+%    \label{211116-4_Summary_Table}
+%\end{table}
+\input{data.tex}
+
+\lfoot{
+\textbf{Test Information} \\
+Sample Group: Taffy Speed Run 0 to 60 \\
+Strain Measurement Method: Time
+}
+\pagebreak
+\end{document}
