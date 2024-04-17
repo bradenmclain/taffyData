@@ -48,8 +48,7 @@ class draggable_lines:
         self.c.mpl_disconnect(self.follower)
 
 def get_data(path,machine):
-    print(path)
-    print(machine)
+    print('attempting to load data')
     if machine == 'tinius':
         data = np.loadtxt(path,dtype="float",delimiter=',',skiprows=2)
         strain = data[:,3]/100
@@ -85,7 +84,6 @@ def calculate_youngs(x,y,lower_percent,upper_percent):
     y_trim = y[lower_index:upper_index]
     x_trim = x[lower_index:upper_index]  
 
-    print(y_trim[0],y_trim[-1])
 
     model = LinearRegression(fit_intercept=True).fit(np.reshape(x_trim,(-1,1)),y_trim)
 

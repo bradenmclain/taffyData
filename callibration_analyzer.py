@@ -2,6 +2,8 @@ from tensile_analyzer import *
 import os
 import matplotlib.pyplot as plt
 import sys
+import subprocess
+
 
 colors = np.array([
     [255, 0, 0],
@@ -93,7 +95,7 @@ class ReportGenerator:
             
     def load_data(self, path: str,offset: float = .02):
         x, y = get_data(path,self.machine)
-        model = calculate_youngs(x,y,.1,.2)
+        model = calculate_youngs(x,y,.2,.5)
         ys = calculate_ys(x,y,model,offset)
         uts = calculate_uts(x,y)
         elongation = calculate_strain_at_break(x,y)
@@ -119,6 +121,7 @@ class  CumulativeReport(ReportGenerator):
             if filename.endswith(".csv"): 
                 print(f'found {os.path.join(directory, filename)}')
                 super().load_data(os.path.join(directory, filename),offset = .02)
+                print('the data was not loaded')
                 
             else:
                 pass
@@ -130,11 +133,18 @@ class  SingleReport(ReportGenerator):
         
 
 if __name__ == '__main__':
+    print(sys.argv[1])
     if os.path.isfile(sys.argv[1]):
         taffy_single = SingleReport(filename=sys.argv[1],machine='gom')
         print('running single report')
         taffy_single.table_generator()
         taffy_single.graph_generator(draw_ys_lines=True)
+        
+        pdf_name = sys.argv[1].split('/')[-1]
+        pdf_name = pdf_name.split('.')[0]
+        subprocess.check_call(['/home/bradenmclain/taffyData/generate_test.sh', 'report.tex','.',pdf_name + '.pdf'])
+
+        
         
 
     if os.path.isdir(sys.argv[1]):
