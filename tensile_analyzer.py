@@ -102,7 +102,9 @@ def calculate_ys(x,y,model,offset):
 
     #x=np.arange(0,0.02,0.0001)
     err=dist_1(x)
-    lowband=x[err<20]
+    #lowband=x[err<10]
+    minidx = np.argmin(err)
+    lowband = x[minidx-10:minidx+10]
     lowmpa=actual_data_interp_function(lowband)
     
     #plt.plot(x,y)

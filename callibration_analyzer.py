@@ -40,7 +40,7 @@ class ReportGenerator:
     def table_generator(self):
             # generate latex table first
             table = []
-            table_header = "\\begin{{longtable}}{{|c|c|c|c|c|}} \\hline \\textbf{{Sample Name}} & \\textbf{{UTS (MPa)}} & \\textbf{{{:}\% YS (MPa)}} & \\textbf{{Break Strain (\%)}} &\\textbf{{Young's Modulus (MPa)}}\\\ \\hline ".format(self.offset*100)
+            table_header = "\\begin{{longtable}}{{|c|c|c|c|c|}} \\hline \\textbf{{Sample Name}} & \\textbf{{UTS (MPa)}} & \\textbf{{{:}\% YS (MPa)}} & \\textbf{{Break Strain (mm/mm)}} &\\textbf{{Young's Modulus (MPa)}}\\\ \\hline ".format(self.offset*100)
             table.append(table_header)
 
             idx =  0
@@ -120,7 +120,7 @@ class  CumulativeReport(ReportGenerator):
             filename = os.fsdecode(file)
             if filename.endswith(".csv"): 
                 print(f'found {os.path.join(directory, filename)}')
-                super().load_data(os.path.join(directory, filename),offset = .02)
+                super().load_data(os.path.join(directory, filename),offset = .002)
                 print('the data was not loaded')
                 
             else:
@@ -135,22 +135,27 @@ class  SingleReport(ReportGenerator):
 if __name__ == '__main__':
     print(sys.argv[1])
     if os.path.isfile(sys.argv[1]):
-        taffy_single = SingleReport(filename=sys.argv[1],machine='gom')
+        taffy_single = SingleReport(filename=sys.argv[1],machine='taffy')
         print('running single report')
         taffy_single.table_generator()
         taffy_single.graph_generator(draw_ys_lines=True)
         
         pdf_name = sys.argv[1].split('/')[-1]
         pdf_name = pdf_name.split('.')[0]
-        subprocess.check_call(['/home/bradenmclain/taffyData/generate_test.sh', 'report.tex','.',pdf_name + '.pdf'])
+        subprocess.check_call(['/home/pine/Documents/GitHub/taffyData/generate_test.sh', 'report','.',pdf_name + '.pdf'])
 
         
         
 
     if os.path.isdir(sys.argv[1]):
-        taffy = CumulativeReport(directory=sys.argv[1],machine='gom')
+        taffy = CumulativeReport(directory=sys.argv[1],machine='taffy')
         taffy.table_generator()
         taffy.graph_generator()
+        pdf_name = sys.argv[1].split('/')[-1]
+        print(sys.argv[1].split('/'))
+        #pdf_name = pdf_name.split('.')[0]
+        print(f'name is {pdf_name}')
+        subprocess.check_call(['/home/pine/Documents/GitHub/taffyData/generate_test.sh', 'group_report','.',f'{pdf_name}_group.pdf'])
     
     
     
